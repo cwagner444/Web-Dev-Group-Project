@@ -89,5 +89,4 @@ function handleColorChange(event) {
 
 populateColorTable();
 
-
 // ^^^^^ FOR FIRST TABLE
