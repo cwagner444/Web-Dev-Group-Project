@@ -1,25 +1,27 @@
+// THIS IS FOR TABLE ONE
 
-// THIS IS FOR THE FIRST TABLE
 
 const colors = ['Red', 'Blue', 'Green', 'Yellow', 'Orange', 'Purple', 'Pink', 'Brown', 'Gray', 'Black'];
 const rows = 10; 
 let usedColors = [];
+let lastSelectedColorIndex = 0;
 
-function updateTable() {
+function updateColorTable() {
     const rowCountInput = document.getElementById('rowCount');
     const rowCount = parseInt(rowCountInput.value);
     if (isNaN(rowCount) || rowCount < 1 || rowCount > 10) {
-        alert('Please enter a number between 1 and 10.');
+        alert('Please enter a number between 1 and 10 for the color table.');
         return;
     }
 
-    clearTable();
+    clearColorTable();
     populateColorTable(rowCount);
 }
 
-function clearTable() {
+function clearColorTable() {
     const colorTableBody = document.getElementById('colorTableBody');
     colorTableBody.innerHTML = '';
+    usedColors = []; 
 }
 
 function populateColorTable(rowCount) {
@@ -30,7 +32,7 @@ function populateColorTable(rowCount) {
         const dropdown = document.createElement('select');
         dropdown.classList.add('color-selector');
         dropdown.addEventListener('change', handleColorChange);
-        populateDropdown(dropdown, i);
+        populateDropdown(dropdown);
         colorCell.appendChild(dropdown);
         row.appendChild(colorCell);
         row.appendChild(document.createElement('td'));
@@ -38,20 +40,17 @@ function populateColorTable(rowCount) {
     }
 }
 
-function populateDropdown(dropdown, index) {
-    colors.forEach((color, i) => {
-        if (!usedColors.includes(color)) {
-            const option = document.createElement('option');
-            option.value = color;
-            option.text = color;
-            dropdown.appendChild(option);
-        }
-    });
-  
-    if (index < colors.length) {
-        dropdown.value = colors[index];
-        usedColors.push(colors[index]);
+function populateDropdown(dropdown) {
+    const startIndex = lastSelectedColorIndex % colors.length;
+    for (let i = 0; i < colors.length; i++) {
+        const colorIndex = (startIndex + i) % colors.length;
+        const color = colors[colorIndex];
+        const option = document.createElement('option');
+        option.value = color;
+        option.text = color;
+        dropdown.appendChild(option);
     }
+    lastSelectedColorIndex++;
 }
 
 function handleColorChange(event) {
@@ -64,12 +63,6 @@ function handleColorChange(event) {
         if (index !== -1) {
             usedColors.splice(index, 1);
         }
-    }
-
- 
-    if (selectedColor !== 'Pick a color') {
-        usedColors.push(selectedColor);
-        event.target.dataset.previousColor = selectedColor;
     }
 
     const allDropdowns = document.querySelectorAll('.color-selector');
@@ -89,4 +82,59 @@ function handleColorChange(event) {
 
 populateColorTable();
 
-// ^^^^^ FOR FIRST TABLE
+/// ^^^^^^ THIS IS FOR TABLE ONE
+
+
+
+
+/// THIS IS FOR TABLE TWO
+
+
+
+function updateAlphabetTable() {
+    const rowCountInput = document.getElementById('tableTwoRowCount');
+    const rowCount = parseInt(rowCountInput.value);
+    if (isNaN(rowCount) || rowCount < 1 || rowCount > 26) {
+        alert('Please enter a number between 1 and 26 for the alphabet table.');
+        return;
+    }
+
+    clearAlphabetTable();
+    populateAlphabetTable(rowCount);
+}
+
+function clearAlphabetTable() {
+    const alphabetTable = document.getElementById('alphabetTable');
+    alphabetTable.innerHTML = '';
+}
+
+function populateAlphabetTable(rowCount) {
+    const alphabetTable = document.getElementById('alphabetTable');
+
+    
+    const headerRow = document.createElement('tr');
+    for (let i = 0; i <= rowCount; i++) {
+        const cell = document.createElement('td');
+        if (i > 0) {
+            cell.textContent = String.fromCharCode(64 + i);
+        }
+        headerRow.appendChild(cell);
+    }
+    alphabetTable.appendChild(headerRow);
+
+  
+    for (let i = 1; i <= rowCount; i++) {
+        const row = document.createElement('tr');
+        for (let j = 0; j <= rowCount; j++) {
+            const cell = document.createElement('td');
+            if (j === 0) {
+                cell.textContent = i;
+            }
+            row.appendChild(cell);
+        }
+        alphabetTable.appendChild(row);
+    }
+}
+
+
+/// ^^^^^ THIS IS TABLE TWO
