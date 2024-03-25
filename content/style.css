@@ -26,6 +26,7 @@ h1 {
 
 #alphabetTable td {
     width: 20px; 
+    text-align: center;
 }
 
 table {

@@ -1,4 +1,4 @@
-const colors = ['Red', 'Blue', 'Green', 'Yellow', 'Orange', 'Purple', 'Pink', 'Brown', 'Gray', 'Black'];
+const colors = ['Black', 'Red', 'Blue', 'Green', 'Yellow', 'Orange', 'Purple', 'Pink', 'Brown', 'Gray'];
 const rows = 10; 
 let usedColors = [];
 let lastSelectedColorIndex = 0;
@@ -6,7 +6,7 @@ let lastSelectedColorIndex = 0;
 function updateColorTable() {
     const rowCountInput = document.getElementById('rowCount');
     const rowCount = parseInt(rowCountInput.value);
-    if (isNaN(rowCount) || rowCount < 1 || rowCount > 10) {
+    if ( rowCount < 1 || rowCount > 10 || isNaN(rowCount)) {
         alert('Please enter a number between 1 and 10 for the color table.');
         return;
     }
@@ -78,7 +78,7 @@ function populateDropdown(dropdown) {
     lastSelectedColorIndex++;
 
    
-    dropdown.dataset.previousColor = defaultColor;
+    dropdown.dataset.previousColor = defaultColor; /// where default color for dropdwon is initialized
 }
 
 function handleColorChange(event) {
@@ -127,7 +127,7 @@ populateColorTable(rows);
 function updateAlphabetTable() {
     const rowCountInput = document.getElementById('tableTwoRowCount');
     const rowCount = parseInt(rowCountInput.value);
-    if (isNaN(rowCount) || rowCount < 1 || rowCount > 26) {
+    if( rowCount < 1 || rowCount > 26 || isNaN(rowCount)) {
         alert('Please enter a number between 1 and 26 for the alphabet table.');
         return;
     }
@@ -146,7 +146,7 @@ function populateAlphabetTable(rowCount) {
 
     
     const headerRow = document.createElement('tr');
-    for (let i = 0; i <= rowCount; i++) {
+    for(let i = 0; i <= rowCount; i++) {
         const cell = document.createElement('td');
         if (i > 0) {
             cell.textContent = String.fromCharCode(64 + i);
