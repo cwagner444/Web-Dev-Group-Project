@@ -1,21 +1,18 @@
-// THIS IS FOR TABLE ONE
-
-
 const colors = ['Red', 'Blue', 'Green', 'Yellow', 'Orange', 'Purple', 'Pink', 'Brown', 'Gray', 'Black'];
 const rows = 10; 
 let usedColors = [];
-let lastSelColorIndex = 0;
+let lastSelectedColorIndex = 0;
 
 function updateColorTable() {
-    const rowCntInput = document.getElementById('rowCnt');
-    const rowCnt = parseInt(rowCntInput.value);
-    if (isNaN(rowCnt) || rowCnt < 1 || rowCnt > 10) {
+    const rowCountInput = document.getElementById('rowCount');
+    const rowCount = parseInt(rowCountInput.value);
+    if (isNaN(rowCount) || rowCount < 1 || rowCount > 10) {
         alert('Please enter a number between 1 and 10 for the color table.');
         return;
     }
 
     clearColorTable();
-    populateColorTable(rowCnt);
+    populateColorTable(rowCount);
 }
 
 function clearColorTable() {
@@ -24,11 +21,11 @@ function clearColorTable() {
     usedColors = []; 
 }
 
-function populateColorTable(rowCnt) {
+function populateColorTable(rowCount) {
     const colorTableBody = document.getElementById('colorTableBody');
 
 
-    for (let i = 0; i < rowCnt; i++) {
+    for (let i = 0; i < rowCount; i++) {
         const row = document.createElement('tr');
         const colorCell = document.createElement('td');
         const dropdown = document.createElement('select');
@@ -44,8 +41,8 @@ function populateColorTable(rowCnt) {
 
     const allDropdowns = document.querySelectorAll('.color-selector');
     allDropdowns.forEach(dropdown => {
-        const defCol = dropdown.querySelector('option').value;
-        usedColors.push(defCol);
+        const defaultColor = dropdown.querySelector('option').value;
+        usedColors.push(defaultColor);
     });
 
 
@@ -60,9 +57,9 @@ function populateColorTable(rowCnt) {
 }
 
 function populateDropdown(dropdown) {
-    const startIndex = lastSelColorIndex % colors.length;
-    const defColIndex = startIndex % colors.length;
-    const defCol = colors[defColIndex];
+    const startIndex = lastSelectedColorIndex % colors.length;
+    const defaultColorIndex = startIndex % colors.length;
+    const defaultColor = colors[defaultColorIndex];
 
     for (let i = 0; i < colors.length; i++) {
         const colorIndex = (startIndex + i) % colors.length;
@@ -72,42 +69,42 @@ function populateDropdown(dropdown) {
         option.text = color;
 
 
-        if (usedColors.includes(color) && color !== defCol) { /// IS THIS WORKING????
+        if (usedColors.includes(color) && color !== defaultColor) {
             option.disabled = true;
         }
 
         dropdown.appendChild(option);
     }
-    lastSelColorIndex++;
+    lastSelectedColorIndex++;
 
    
-    dropdown.dataset.prevColor = defCol;
+    dropdown.dataset.previousColor = defaultColor;
 }
 
 function handleColorChange(event) {
-    const selColor = event.target.value;
-    const prevColor = event.target.dataset.prevColor;
+    const selectedColor = event.target.value;
+    const previousColor = event.target.dataset.previousColor;
 
-    if (prevColor !== undefined && prevColor !== selColor) {
-        const index = usedColors.indexOf(prevColor);
+    if (previousColor !== undefined && previousColor !== selectedColor) {
+        const index = usedColors.indexOf(previousColor);
         if (index !== -1) {
             usedColors.splice(index, 1);
         }
     }
 
-    if (!usedColors.includes(selColor)) {
-        usedColors.push(selColor);
+    if (!usedColors.includes(selectedColor)) {
+        usedColors.push(selectedColor);
     }
 
 
-    event.target.dataset.prevColor = selColor;
+    event.target.dataset.previousColor = selectedColor;
 
 
     const allDropdowns = document.querySelectorAll('.color-selector');
     allDropdowns.forEach(dropdown => {
         const options = dropdown.querySelectorAll('option');
         options.forEach(option => {
-            if (option.value === selColor) {
+            if (option.value === selectedColor) {
                 option.disabled = true;
             } else {
                 option.disabled = usedColors.includes(option.value);
