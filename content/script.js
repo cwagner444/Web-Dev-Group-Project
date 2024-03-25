@@ -7,7 +7,7 @@ function updateColorTable() {
     const rowCountInput = document.getElementById('rowCount');
     const rowCount = parseInt(rowCountInput.value);
     if ( rowCount < 1 || rowCount > 10 || isNaN(rowCount)) {
-        alert('Please enter a number between 1 and 10 for the color table.');
+        alert('Enter a number between 1 and 10.');
         return;
     }
 
@@ -78,7 +78,7 @@ function populateDropdown(dropdown) {
     lastSelectedColorIndex++;
 
    
-    dropdown.dataset.previousColor = defaultColor; /// where default color for dropdwon is initialized
+    dropdown.dataset.previousColor = defaultColor; /// where default color for dropdron is initialized
 }
 
 function handleColorChange(event) {
@@ -128,7 +128,7 @@ function updateAlphabetTable() {
     const rowCountInput = document.getElementById('tableTwoRowCount');
     const rowCount = parseInt(rowCountInput.value);
     if( rowCount < 1 || rowCount > 26 || isNaN(rowCount)) {
-        alert('Please enter a number between 1 and 26 for the alphabet table.');
+        alert('Enter a number between 1 and 26');
         return;
     }
 
