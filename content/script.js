@@ -4,18 +4,18 @@
 const colors = ['Red', 'Blue', 'Green', 'Yellow', 'Orange', 'Purple', 'Pink', 'Brown', 'Gray', 'Black'];
 const rows = 10; 
 let usedColors = [];
-let lastSelectedColorIndex = 0;
+let lastSelColorIndex = 0;
 
 function updateColorTable() {
-    const rowCountInput = document.getElementById('rowCount');
-    const rowCount = parseInt(rowCountInput.value);
-    if (isNaN(rowCount) || rowCount < 1 || rowCount > 10) {
+    const rowCntInput = document.getElementById('rowCnt');
+    const rowCnt = parseInt(rowCntInput.value);
+    if (isNaN(rowCnt) || rowCnt < 1 || rowCnt > 10) {
         alert('Please enter a number between 1 and 10 for the color table.');
         return;
     }
 
     clearColorTable();
-    populateColorTable(rowCount);
+    populateColrTable(rowCnt);
 }
 
 function clearColorTable() {
@@ -24,9 +24,11 @@ function clearColorTable() {
     usedColors = []; 
 }
 
-function populateColorTable(rowCount) {
+function populateColrTable(rowCnt) {
     const colorTableBody = document.getElementById('colorTableBody');
-    for (let i = 0; i < rowCount; i++) {
+
+
+    for (let i = 0; i < rowCnt; i++) {
         const row = document.createElement('tr');
         const colorCell = document.createElement('td');
         const dropdown = document.createElement('select');
@@ -38,49 +40,83 @@ function populateColorTable(rowCount) {
         row.appendChild(document.createElement('td'));
         colorTableBody.appendChild(row);
     }
+
+
+    const allDropdowns = document.querySelectorAll('.color-selector');
+    allDropdowns.forEach(dropdown => {
+        const defCol = dropdown.querySelector('option').value;
+        usedColors.push(defCol);
+    });
+
+
+    allDropdowns.forEach(dropdown => {
+        const options = dropdown.querySelectorAll('option');
+        options.forEach(option => {
+            if (usedColors.includes(option.value)) {
+                option.disabled = true;
+            }
+        });
+    });
 }
 
 function populateDropdown(dropdown) {
-    const startIndex = lastSelectedColorIndex % colors.length;
+    const startIndex = lastSelColorIndex % colors.length;
+    const defColIndex = startIndex % colors.length;
+    const defCol = colors[defColIndex];
+
     for (let i = 0; i < colors.length; i++) {
         const colorIndex = (startIndex + i) % colors.length;
         const color = colors[colorIndex];
         const option = document.createElement('option');
         option.value = color;
         option.text = color;
+
+
+        if (usedColors.includes(color) && color !== defCol) { /// IS THIS WORKING????
+            option.disabled = true;
+        }
+
         dropdown.appendChild(option);
     }
-    lastSelectedColorIndex++;
+    lastSelColorIndex++;
+
+   
+    dropdown.dataset.prevColor = defCol;
 }
 
 function handleColorChange(event) {
-    const selectedColor = event.target.value;
-    const previousColor = event.target.dataset.previousColor;
+    const selColor = event.target.value;
+    const prevColor = event.target.dataset.prevColor;
 
-  
-    if (previousColor) {
-        const index = usedColors.indexOf(previousColor);
+    if (prevColor !== undefined && prevColor !== selColor) {
+        const index = usedColors.indexOf(prevColor);
         if (index !== -1) {
             usedColors.splice(index, 1);
         }
     }
 
+    if (!usedColors.includes(selColor)) {
+        usedColors.push(selColor);
+    }
+
+
+    event.target.dataset.prevColor = selColor;
+
+
     const allDropdowns = document.querySelectorAll('.color-selector');
     allDropdowns.forEach(dropdown => {
-        if (dropdown !== event.target) {
-            const options = dropdown.querySelectorAll('option');
-            options.forEach(option => {
-                if (option.value === selectedColor) {
-                    option.disabled = true;
-                } else {
-                    option.disabled = false;
-                }
-            });
-        }
+        const options = dropdown.querySelectorAll('option');
+        options.forEach(option => {
+            if (option.value === selColor) {
+                option.disabled = true;
+            } else {
+                option.disabled = usedColors.includes(option.value);
+            }
+        });
     });
 }
 
-populateColorTable();
+populateColrTable(rows);
 
 /// ^^^^^^ THIS IS FOR TABLE ONE
 
