@@ -15,7 +15,7 @@ function updateColorTable() {
     }
 
     clearColorTable();
-    populateColrTable(rowCnt);
+    populateColorTable(rowCnt);
 }
 
 function clearColorTable() {
@@ -24,7 +24,7 @@ function clearColorTable() {
     usedColors = []; 
 }
 
-function populateColrTable(rowCnt) {
+function populateColorTable(rowCnt) {
     const colorTableBody = document.getElementById('colorTableBody');
 
 
@@ -116,7 +116,7 @@ function handleColorChange(event) {
     });
 }
 
-populateColrTable(rows);
+populateColorTable(rows);
 
 /// ^^^^^^ THIS IS FOR TABLE ONE
 
